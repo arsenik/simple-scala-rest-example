@@ -124,15 +124,15 @@ class CustomerDAO extends Configuration {
       db.withSession {
         val query = for {
           customer <- Customers if {
-          Seq(
-            params.firstName.map(customer.firstName is _),
-            params.lastName.map(customer.lastName is _),
-            params.birthday.map(customer.birthday is _)
-          ).flatten match {
-            case Nil => ConstColumn.TRUE
-            case seq => seq.reduce(_ && _)
+            Seq(
+              params.firstName.map(customer.firstName is _),
+              params.lastName.map(customer.lastName is _),
+              params.birthday.map(customer.birthday is _)
+            ).flatten match {
+              case Nil => ConstColumn.TRUE
+              case seq => seq.reduce(_ && _)
+            }
           }
-        }
         } yield customer
 
         Right(query.run.toList)
